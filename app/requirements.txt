@@ -1,0 +1,7 @@
+pillow
+numpy
+scipy
+opencv-python
+tensorflow
+keras
+keras_retinanet

@@ -1,0 +1,346 @@
+%===============================================================================
+% Brno University of Technology
+% Faculty of Information Technology
+% Academic year: 2018/2019
+% Bachelor thesis: Monitoring Pedestrian by Drone
+% Author: Vladimir Dusek
+%===============================================================================
+% tento soubor pouzijte jako zaklad
+% this file should be used as a base for the thesis
+% Autoři / Authors: 2008 Michal Bidlo, 2018 Jaroslav Dytrych
+% Kontakt pro dotazy a připomínky: dytrych@fit.vutbr.cz
+% Contact for questions and comments: dytrych@fit.vutbr.cz
+%==============================================================================
+% kodovani: UTF-8 (zmena prikazem iconv, recode nebo cstocs)
+%------------------------------------------------------------------------------
+% zpracování: make, make pdf, make clean
+%==============================================================================
+% \documentclass[]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
+% \documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
+\documentclass[zadani]{fitthesis} % odevzdani do wisu a/nebo tisk s barevnými odkazy - odkazy jsou barevné
+% \documentclass[english,zadani]{fitthesis} % for submission to the IS FIT and/or print with color links - links are color
+% \documentclass[zadani,print]{fitthesis} % pro černobílý tisk - odkazy jsou černé
+% \documentclass[english,zadani,print]{fitthesis} % for the black and white print - links are black
+% \documentclass[zadani,cprint]{fitthesis} % pro barevný tisk - odkazy jsou černé, znak VUT barevný
+% \documentclass[english,zadani,cprint]{fitthesis} % for the print - links are black, logo is color
+
+% * Je-li práce psaná v anglickém jazyce, je zapotřebí u třídy použít
+%   parametr english následovně:
+%   If thesis is written in english, it is necessary to use
+%   parameter english as follows:
+%      \documentclass[english]{fitthesis}
+% * Je-li práce psaná ve slovenském jazyce, je zapotřebí u třídy použít
+%   parametr slovak následovně:
+%   If the work is written in the Slovak language, it is necessary
+%   to use parameter slovak as follows:
+%      \documentclass[slovak]{fitthesis}
+% * Je-li práce psaná v anglickém jazyce se slovenským abstraktem apod.,
+%   je zapotřebí u třídy použít parametry english a enslovak následovně:
+%   If the work is written in English with the Slovak abstract, etc.,
+%   it is necessary to use parameters english and enslovak as follows:
+%      \documentclass[english,enslovak]{fitthesis}
+
+% Základní balíčky jsou dole v souboru šablony fitthesis.cls
+% zde můžeme vložit vlastní balíčky
+
+% Kompilace po částech (rychlejší, ale v náhledu nemusí být vše aktuální)
+% \usepackage{subfiles}
+
+% Nastavení cesty k obrázkům
+\graphicspath{{images/}{./images/}}
+
+% Zavede Latin Modern Roman jako rm
+\renewcommand{\rmdefault}{lmr}
+
+% Zavede TeX Gyre Heros jako sf
+\renewcommand{\sfdefault}{qhv}
+
+% Zavede Latin Modern tt jako tt
+\renewcommand{\ttdefault}{lmtt}
+
+% Command for image borders
+\setlength{\fboxsep}{0.005pt}
+\newcommand{\tmpframe}[1]{\fbox{#1}}
+\renewcommand{\tmpframe}[1]{#1}
+
+% Command for ToDo
+\usepackage{xcolor}
+\renewcommand{\todo}[1]{\textcolor{red}{\textbf{[[#1]]}}}
+
+% Command for blind text
+\usepackage{blindtext}
+\renewcommand{\blind}[1][1]{\textcolor{gray}{\Blindtext[#1][1]}}
+
+% Caption center
+\usepackage[justification=centering]{caption}
+
+% Another packages
+\usepackage{amsmath}
+\usepackage{multicol}
+\usepackage{subcaption}
+\usepackage{algorithm2e}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{url}
+
+% vypne funkci šablony, která automaticky nahrazuje uvozovky,
+% aby nebyly prováděny nevhodné náhrady v popisech API apod.
+\csdoublequotesoff
+
+% =======================================================================
+% balíček "hyperref" vytváří klikací odkazy v pdf, pokud tedy použijeme pdflatex
+% problém je, že balíček hyperref musí být uveden jako poslední, takže nemůže
+% být v šabloně
+\ifWis
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+    \usepackage{color}
+    \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex]{hyperref}
+    \definecolor{hrcolor-ref}{RGB}{223,52,30}
+    \definecolor{hrcolor-cite}{HTML}{2F8F00}
+    \definecolor{hrcolor-urls}{HTML}{092EAB}
+    \hypersetup{
+        linkcolor=hrcolor-ref,
+        citecolor=hrcolor-cite,
+        filecolor=magenta,
+        urlcolor=hrcolor-urls
+    }
+    \def\pdfBorderAttrs{/Border [0 0 0] }  % bez okrajů kolem odkazů
+    \pdfcompresslevel=9
+\fi
+\else % pro tisk budou odkazy, na které se dá klikat, černé
+\ifx\pdfoutput\undefined % nejedeme pod pdflatexem
+\else
+    \usepackage{color}
+    \usepackage[unicode,colorlinks,hyperindex,plainpages=false,pdftex,urlcolor=black,linkcolor=black,citecolor=black]{hyperref}
+    \definecolor{links}{rgb}{0,0,0}
+    \definecolor{anchors}{rgb}{0,0,0}
+    \def\AnchorColor{anchors}
+    \def\LinkColor{links}
+    \def\pdfBorderAttrs{/Border [0 0 0] } % bez okrajů kolem odkazů
+    \pdfcompresslevel=9
+\fi
+\fi
+
+% Řešení problému, kdy klikací odkazy na obrázky vedou za obrázek
+\usepackage[all]{hypcap}
+
+% Informace o projektu
+%---------------------------------------------------------------------------
+\projectinfo{
+    % typ práce BP/SP/DP/DR
+    project={BP},
+    % rok odevzdání
+    year={2019},
+    % datum odevzdání
+    date=\today,
+    % název práce v češtině
+    title.cs={Monitorování chodců pomocí dronu},
+    % název práce v angličtině
+    title.en={Monitoring Pedestrian by Drone},
+    % nastavení délky bloku s titulkem pro úpravu zalomení řádku (lze definovat zde nebo níže)
+    % title.length={14.5cm},
+    % jméno autora
+    author.name={Vladimír},
+    % příjmení autora
+    author.surname={Dušek},
+    % titul autora před jménem (nepovinné)
+    author.title.p={},
+    % titul autora za jménem (nepovinné)
+    author.title.a={},
+    % doplňte příslušnou zkratku dle ústavu na zadání: UPSY/UIFS/UITS/UPGM
+    department={UITS},
+    % jméno školitele
+    supervisor.name={Martin},
+    % příjmení školitele
+    supervisor.surname={Drahanský},
+    % titul školitele před jménem (nepovinné)
+    supervisor.title.p={\large Prof. Ing., Dipl.-Ing.},
+    % titul školitele za jménem (nepovinné)
+    supervisor.title.a={\large Ph.D.},
+    % klíčová slova v českém jazyce
+    keywords.cs={umělá inteligence, strojové učení, klasifikace, klasifikační algoritmy, hluboké učení, neuronové sítě, konvoluční neuronové sítě, rozpoznávání obrazu, počítačové vidění, detekce objektů, detekce lidí, detekce chodců, reidentifikace osob, RetinaNet, dron},
+    % klíčová slova v anglickém jazyce
+    keywords.en={artificial intelligence, machine learning, classification, classification algorithms, deep learning, neural networks, convolutional neural networks, image recognition, computer vision, object detection, human detection, pedestrian detection, person re-identification, RetinaNet, drone},
+    % abstrakt v českém jazyce
+    abstract.cs={Tato práce se zabývá monitorováním lidí na videozáznamu pořízeným dronem. Detekce osob v~obraze je realizována pomocí natrénovaného modelu detekční sítě RetinaNet. Každé detekované osobě je extrahován příznakový vektor pomocí barevných histogramů. Jednoznačná identifikace detekovaných osob je uskutečněna porovnáváním jejich příznakových vektorů s~ohledem na jejich vzdálenost ve snímku. Nakonec je vykreslena trajektorie pohybů všech detekovaných osob do výsledného panoramatického obrázku. Úspěšnost detektoru na těžkých validačních datech je 58,6\,\%. Chybovost je částečně vyřešena způsobem navrhnutí algoritmu pro vizualizaci trajektorií. Pro korektní vykreslení trajektorie osoby ji není nutné úspěšně detekovat v~každém snímku. Zároveň statické objekty, kde je vysoká pravděpodobnost, že se nejedná o~člověka, nejsou vizualizovány vůbec. Algoritmů zabývajících se detekcí lidí je velké množství, avšak přístupů zaměřených se na pohled z~výšky je velmi poskromnu.},
+    % abstrakt v anglickém jazyce
+    abstract.en={This thesis is focused on monitoring people in a video footage captured by drone. People are detected by trained model of detector RetinaNet. A feature vector is extracted for each detected person using color histograms. Identification of people is realized by comparing their feature vectors with respect to their distance in the frame. In the end the  trajectories of all people are visualized in a panorama image. Accuracy of the trained RetinaNet detector on difficult validation data is 58.6\,\%. Error rate is partially reduced by the way of algorithm design for trajectory visualisation. It's not necessary to successfully detect person on every frame for correct visualization of its trajectories. At the same time, static objects which are detected as person but are not moving are not consider as people and are not visualized at all. There is a lot of algorithms dealing with people detection however only a few approaches are focused on detection people from an aerial footage.},
+    % prohlášení (u anglicky psané práce anglicky, u slovensky psané práce slovensky)
+    declaration={Prohlašuji, že jsem tuto bakalářskou práci vypracoval samostatně pod vedením pana Prof. Ing., Dipl.-Ing. Martina Drahanského, Ph.D. Další informace mi poskytl konzultant Ing. Tomáš Goldmann. Uvedl jsem všechny literární prameny a publikace, ze kterých jsem čerpal.},
+    % Poděkování (nepovinné, nejlépe v jazyce práce)
+    acknowledgment={Chtěl bych poděkovat panu Ing. Tomáši Goldmannovi za veškeré odborné konzultace a poskytnuté rady v~celém průběhu tvorby této práce. Dále děkuji skupince dobrovolníků, která se zúčastnila pořizování testovacích záběrů dronem a ochotně dbala mých instrukcí.},
+    % Fakulta v češtině - pro využití této položky výše zvolte fakultu DEF
+    faculty.cs={Fakulta informačních technologií},
+    % Fakulta v angličtině - pro využití této položky výše zvolte fakultu DEF
+    faculty.en={Faculty of Information Technology},
+    % Ústav v češtině - pro využití této položky výše zvolte ústav DEF nebo jej zakomentujte
+    department.cs={Ústav inteligentních systémů},
+    % Ústav v angličtině - pro využití této položky výše zvolte ústav DEF nebo jej zakomentujte
+    department.en={Department of Intelligent Systems}
+}
+
+% Styl listings pro psaní algoritmů
+\lstset{
+    frame = single,  % lines
+    language = Python,
+    basicstyle = \footnotesize
+}
+
+% nastavení délky bloku s titulkem pro úpravu zalomení řádku - lze definovat zde nebo výše / setting the length of a block with a thesis title for adjusting a line break - can be defined here or above
+%\titlelength{14.5cm}
+
+% Reší první/poslední řádek odstavce na předchozí/následující stránce
+\clubpenalty=10000
+\widowpenalty=10000
+
+% Checklist
+\newlist{checklist}{itemize}{1}
+\setlist[checklist]{label=$\square$}
+
+\begin{document}
+    % Vysazeni titulnich stran
+    % ----------------------------------------------
+    \maketitle
+
+    % Obsah
+    % ----------------------------------------------
+    \setlength{\parskip}{0pt}
+
+    {\hypersetup{hidelinks}\tableofcontents}
+
+    % Seznam obrazku (pokud prace obsahuje velke mnozstvi obrazku, tak se to hodi)
+    \ifczech
+    \renewcommand\listfigurename{Seznam obrázků}
+    \fi
+    \ifslovak
+    \renewcommand\listfigurename{Zoznam obrázkov}
+    \fi
+    \listoffigures
+
+    % Seznam tabulek
+    \ifczech
+    \renewcommand\listtablename{Seznam tabulek}
+    \fi
+    \ifslovak
+    \renewcommand\listtablename{Zoznam tabuliek}
+    \fi
+    % \listoftables
+
+    \ifODSAZ
+    \setlength{\parskip}{0.5\bigskipamount}
+    \else
+    \setlength{\parskip}{0pt}
+    \fi
+
+    % vynechani stranky v oboustrannem rezimu
+    % Skip the page in the two-sided mode
+    \iftwoside
+    \cleardoublepage
+    \fi
+
+    % Text prace / Thesis text
+    % ----------------------------------------------
+    \input{xdusek27-kapitola-01}
+    \input{xdusek27-kapitola-02}
+    \input{xdusek27-kapitola-03}
+    \input{xdusek27-kapitola-04}
+    \input{xdusek27-kapitola-05}
+    \input{xdusek27-kapitola-06}
+    \input{xdusek27-kapitola-07}
+
+    % Kompilace po částech (viz výše, nutno odkomentovat)
+    % Compilation piecewise (see above, it is necessary to uncomment it)
+    %\subfile{projekt-01-uvod-introduction}
+    % ...
+    %\subfile{chapters/projekt-05-conclusion}
+
+
+    % Pouzita literatura / Bibliography
+    % ----------------------------------------------
+    \ifslovak
+        \makeatletter
+        \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatúra}}
+        \makeatother
+        \bibliographystyle{bib-styles/slovakiso}
+    \else
+        \ifczech
+            \makeatletter
+            \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
+            \makeatother
+            \bibliographystyle{bib-styles/czechiso}
+        \else
+            \makeatletter
+            \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
+            \makeatother
+            \bibliographystyle{bib-styles/englishiso}
+            %  \bibliographystyle{alpha}
+        \fi
+    \fi
+
+    \begin{flushleft}
+        \bibliography{xdusek27-literatura}
+    \end{flushleft}
+
+    % Vynechani stranky v oboustrannem rezimu
+    \iftwoside
+        \cleardoublepage
+    \fi
+
+    % Prilohy
+    % ---------------------------------------------
+    \appendix
+    \ifczech
+        \renewcommand{\appendixpagename}{Přílohy}
+        \renewcommand{\appendixtocname}{Přílohy}
+        \renewcommand{\appendixname}{Příloha}
+    \fi
+    \ifslovak
+        \renewcommand{\appendixpagename}{Prílohy}
+        \renewcommand{\appendixtocname}{Prílohy}
+        \renewcommand{\appendixname}{Príloha}
+    \fi
+    %  \appendixpage
+
+    % vynechani stranky v oboustrannem rezimu
+    % Skip the page in the two-sided mode
+    %\iftwoside
+    %  \cleardoublepage
+    %\fi
+
+    \ifslovak
+    %  \section*{Zoznam príloh}
+    %  \addcontentsline{toc}{section}{Zoznam príloh}
+    \else
+      \ifczech
+    %    \section*{Seznam příloh}
+    %    \addcontentsline{toc}{section}{Seznam příloh}
+      \else
+    %    \section*{List of Appendices}
+    %    \addcontentsline{toc}{section}{List of Appendices}
+      \fi
+    \fi
+    \startcontents[chapters]
+    \setlength{\parskip}{0pt}
+
+    % Seznam priloh
+    % \printcontents[chapters]{l}{0}{\setcounter{tocdepth}{2}}
+
+    \ifODSAZ
+    \setlength{\parskip}{0.5\bigskipamount}
+    \else
+    \setlength{\parskip}{0pt}
+    \fi
+
+    % Vynechani stranky v oboustrannem rezimu
+    \iftwoside
+        \cleardoublepage
+    \fi
+
+    % Prilohy
+    \input{xdusek27-prilohy}
+
+    % Kompilace po částech (viz výše, nutno odkomentovat)
+    % \subfile{xdusek27-prilohy}
+
+\end{document}

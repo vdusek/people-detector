@@ -1,0 +1,26 @@
+%===============================================================================
+% Brno University of Technology
+% Faculty of Information Technology
+% Academic year: 2018/2019
+% Bachelor thesis: Monitoring Pedestrian by Drone
+% Author: Vladimir Dusek
+%===============================================================================
+
+\chapter{Závěr}
+\label{chap_7}
+
+Práce se zabývá detekcí lidí v~obrazovém materiálu pořízeném dronem. Detekované osoby jsou od sebe vzájemně rozlišeny a jejich pohyb je monitorován v~průběhu celého videozáznamu. Po zpracování celého videa jsou trajektorie jednotlivých osob vizualizovány.
+
+K~rozpoznání osob byla využita detekční síť RetinaNet. Předtrénované modely nebyly schopny detekovat lidi z~dostatečné výšky. Z~toho důvodu byl natrénován vlastní model na datasetu Stanford Drone Dataset. Proběhly celkem 3 trénování, kdy bylo s~datasetem manipulováno na základě průběžných výsledků. Dále byl implementován algoritmus identifikace chodců, podle kterého byla každé osobě vykreslena trajektorie pohybu. Detekované objekty, které se v~průběhu videa nepohybovaly, jsou považovány za chybu detektoru a nejsou vizualizovány. Trajektorie pohybů osob jsou vykresleny do prvního snímku videa. Pro demonstraci funkcionality byla implementována aplikace s~grafickým rozhraním.
+
+Dosáhnutá přesnost detektoru 58,6\,\% na validační části datasetu je spíše slabá. Tato nízká hodnota je způsobena jednak složitostí problému, kdy lidé z~velké výšky mohou být snadno zaměnitelní za jiné objekty, tak také nepřesnými anotacemi použitého datasetu, a to i přes jeho ruční protřízení.
+
+Ani identifikace chodců pomocí porovnávání jejich příznakových vektorů založených na barevných histogramech nefunguje perfektně. Nijak není realizováno oříznutí pozadí kolem chodce. Histogramy tak jsou počítány pro celý segment vrácený detektorem. To znamená, že histogram se může výrazně změnit pokud chodec změní pozadí. Proto si algoritmus identifikace pomáhá využitím vzájemné fyzické vzdálenosti detekovaných osob.
+
+Výsledné trajektorie jsou zaznamenávány do prvního snímku  videa. Z~toho vyplývá omezující podmínka pro korektní vykreslování trajektorií pohybu: pořízený záznam musí být statický, dron se v~průběhu natáčení nemůže hýbat.
+
+Potenciální budoucí rozšíření může spočívat v~implementaci nějaké formy \textit{image-stitching} algoritmu. Pomocí něho by jednotlivé snímky videozáznamu mohly být pospojovány a vznikla by panoramatická mapa, která by zaznamenávala celou zabranou oblast ve videu. Pro správné zakreslení trajektorií chodců by následně bylo nutné implementovat mechanismus, pomocí kterého by byl každý jednotlivý snímek v~panoramatu detekován. Celý program by pak fungoval i pro videozáznamy, kde se dron pohybuje.
+
+Dosáhnutí vyšší přesnosti detektoru by bylo možné za použití lépe anotovaného datasetu. Oblast neuronových sítí je velmi dynamicky se rozvíjející obor. Téměř každý rok jsou představovány dokonalejší a přesnější architektury. I~z~tohoto důvodu nebude problém přesnost zde představeného detektoru překonat.
+
+%===============================================================================

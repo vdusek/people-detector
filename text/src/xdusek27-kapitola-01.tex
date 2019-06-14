@@ -1,0 +1,28 @@
+%===============================================================================
+% Brno University of Technology
+% Faculty of Information Technology
+% Academic year: 2018/2019
+% Bachelor thesis: Monitoring Pedestrian by Drone
+% Author: Vladimir Dusek
+%===============================================================================
+
+\chapter{Úvod}
+\label{chap_1}
+
+Technologický vývoj v~oblasti hardware zaznamenal v~posledních desítkách let obrovský pokrok. Počítače dosahují několikanásobného výpočetního výkonu a disponují mnohokrát větší pamětí. Zároveň díky internetu a moderním technologiím dnešní doby je zaznamenáváno daleko více dat. Tyto skutečnosti vytváří ideální prostředí pro rozvoj oblasti strojového učení, speciálně pak oboru neuronových sítí. Jejich teoretický základ předběhl technologickou vyspělost tehdejší doby. Nyní neuronové sítě konečně dokáží uplatnit svůj potenciál a odstartovaly revoluci například v~odvětví zpracování obrazu a zpracování lidské řeči.
+
+Cílem práce je prostudovat možnosti detekce osob v~obraze z~výšky, z~videozáznamu pořízeným dronem. Každý detekovaný člověk bude v~průběhu zpracování videa identifikován. Jednotliví lidé budou od sebe rozlišeni, budou monitorováni v~průběhu celého záznamu a nakonec trajektorie jejich pohybů budou vizualizovány v~panoramatickém snímku. Bude implementována aplikace pro otestování a demonstraci funkcionality.
+
+V~kapitole~\ref{chap_2} je čtenáři představena oblast detekce objektů v~obraze. Ve stručnosti je nastíněno, jak celý proces probíhá a jsou vysvětleny některé starší klasifikační algoritmy, které ve své době byly významné až pokrokové. Dále kapitola pojednává o~umělých neuronových sítích a jejich využití pro zpracování obrazu. Je vysvětlena analogie s~biologickými neuronovými sítěmi, jak umělé neuronové sítě fungují, jak probíhá proces učení, jak jsou jednotlivé neurony na sebe napojeny a jak fungují konvoluční neuronové sítě pro klasifikaci dat. Na konci kapitoly je vysvětleno, jak se dají využít pro detekci objektů a je představeno několik konkrétních detektorů.
+
+Problematika dronů je nastíněna v~kapitole~\ref{chap_3}. Přes historii vývoje dronů, po jejich současnou podobu a využití dnes i v~blízké budoucnosti, je srovnáno několik konkrétních modelů s~ohledem na jejich možné využití pro monitorování chodců.
+
+Kapitola~\ref{chap_4} představuje zvolenou implementaci detektoru. Dále vybraný dataset a veškeré manipulace s~ním. Je popsán proces trénování vlastního modelu. V~průběhu jsou prezentovány výsledky a na jejich základě další modifikace datasetu.
+
+V~kapitole~\ref{chap_5} je představen návrh algoritmu pro monitorování chodců. Více je rozvedena problematika jejich identifikace a reidentifikace. Nakonec je popsána vytvořená demonstrační aplikace People Detector.
+
+Výsledky a provedení experimentů jsou shrnuty v~kapitole~\ref{chap_6}. Nejprve je vyhodnocena úspěšnost detektoru a poté je na několika ukázkách představena funkčnost algoritmu reidentifikace lidí a zakreslení jejich trajektorií do snímku. Je vyhodnoceno v~jakých situacích mechanismus funguje a kdy naopak ne.
+
+Závěrečná~\ref{chap_7}. kapitola pak shrnuje provedenou práci, zamýšlí se nad výsledky, možným budoucím vývojem a dalšími rozšířeními.
+
+%===============================================================================
