@@ -1,0 +1,36 @@
+## Python virtual enviroment
+*env/
+
+## Python auxiliary files
+*.idea/
+*__pycache__/
+
+## Retinanet models (they're too big)
+*.h5
+
+## Latex auxiliary files
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+*.fmt
+*.fot
+*.cb
+*.cb2
+.*.lb
+*.dvi
+*.xdv
+*-converted-to.*
+*.bbl
+*.blg
+*.ptc
+*.nav
+*.snm
+*.te~
+
+## Texmaker files
+*.gz
+*.tks

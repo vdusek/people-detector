@@ -37,7 +37,7 @@ $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)
 
 clean:
-	rm -f *.dvi *.log $(CO).blg $(CO).bbl $(CO).toc *.aux $(CO).out $(CO).lof $(CO).ptc
+	rm -f $(CO).dvi $(CO).log $(CO).blg $(CO).bbl $(CO).toc $(CO).aux $(CO).out $(CO).lof $(CO).ptc $(CO).nav $(CO).snm *.te~
 	rm -f *~
 
 clean-all: clean
