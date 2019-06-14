@@ -32,6 +32,32 @@ This thesis is focused on monitoring people in video footage captured by a drone
 
 <!----------------------------------------------------------------------------->
 
+## Application
+
+### GUI
+
+![People Detector GUI](text/src/images/gui-2.jpg)
+
+### Examples
+
+#### Detector
+
+![t3-t1](text/src/images/t3-t.jpg)
+
+![t3-v1](text/src/images/t3-v.jpg) 
+
+#### Detector + identification
+
+![res-coupa-panorama](text/src/images/res-coupa-panorama.jpg)
+
+![res-death_circle-panorama](text/src/images/res-death_circle-panorama.jpg)
+
+![res-little-panorama](text/src/images/res-little-panorama.jpg)
+
+![res-drone-vid1-panorama](text/src/images/res-drone-vid1-panorama.jpg)
+
+![res-drone-vid2-panorama](text/src/images/res-drone-vid2-panorama.jpg)
+
 <!-- Obsah:
 - app/ -- demonstrační aplikace People Detector
 - app/models/ -- natrénované modely na datasetu Stanford Drone Dataset
