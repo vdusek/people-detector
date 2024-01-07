@@ -1,19 +1,21 @@
-#===============================================================================
+# ===============================================================================
 # Brno University of Technology
 # Faculty of Information Technology
 # Academic year: 2018/2019
 # Bachelor thesis: Monitoring Pedestrian by Drone
 # Author: Vladimír Dušek
-#===============================================================================
+# ===============================================================================
 
 import os
-from utils import OutputType, InputType
+
+from utils import InputType, OutputType
 
 
 class File:
     """
     Class for manipulation with input/output files.
     """
+
     def __init__(self, tmp_dir, full_path):
         """
         Initialization of class attributes.
@@ -29,9 +31,9 @@ class File:
         self.extension = os.path.splitext(full_path)[1]
         self.output_type = None
 
-        if self.extension in ['.jpg', '.jpeg', '.png', '.bmp']:
+        if self.extension in [".jpg", ".jpeg", ".png", ".bmp"]:
             self.type = InputType.IMAGE
-        elif self.extension in ['.mp4', '.avi', '.wmv', '.mov', '.mkv']:
+        elif self.extension in [".mp4", ".avi", ".wmv", ".mov", ".mkv"]:
             self.type = InputType.VIDEO
         else:
             raise ValueError
@@ -56,9 +58,9 @@ class File:
         """
         self.output_type = output_type
         if output_type == OutputType.PANORAMA and self.type == InputType.VIDEO:
-            return self.tmp_dir + self.name + '-processed-v' + self.get_output_type() + '.png'
+            return self.tmp_dir + self.name + "-processed-v" + self.get_output_type() + ".png"
         else:
-            return self.tmp_dir + self.name + '-processed-v' + self.get_output_type() + self.extension
+            return self.tmp_dir + self.name + "-processed-v" + self.get_output_type() + self.extension
 
     def get_frame_name(self, output_type):
         """
@@ -67,7 +69,7 @@ class File:
         :return: frame name
         """
         self.output_type = output_type
-        return self.name + '-processed-v' + self.get_output_type()
+        return self.name + "-processed-v" + self.get_output_type()
 
     def get_frame_dir(self, output_type):
         """
@@ -76,4 +78,4 @@ class File:
         :return: name of the frame directory
         """
         self.output_type = output_type
-        return self.tmp_dir + self.name + '-processed-v' + self.get_output_type() + '-dir/'
+        return self.tmp_dir + self.name + "-processed-v" + self.get_output_type() + "-dir/"

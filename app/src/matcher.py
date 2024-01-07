@@ -8,13 +8,14 @@
 
 import math
 import sys
+
 import cv2
+from keras_retinanet.utils.visualization import draw_box
 from PIL import Image
 from scipy.spatial import distance
-from keras_retinanet.utils.visualization import draw_box
-from describer import Describer
-from utils import InputType, get_thickness, draw_caption, create_folder
 
+from describer import Describer
+from utils import InputType, create_folder, draw_caption, get_thickness
 
 # Object histogram comparison will be compute only for the objects which are closer to each other than this treshold
 EUCLIDEAN_DISTANCE_TRESHOLD = 50

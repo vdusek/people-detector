@@ -1,10 +1,10 @@
-#===============================================================================
+# ===============================================================================
 # Brno University of Technology
 # Faculty of Information Technology
 # Academic year: 2018/2019
 # Bachelor thesis: Monitoring Pedestrian by Drone
 # Author: Vladimír Dušek
-#===============================================================================
+# ===============================================================================
 
 import cv2
 
@@ -13,6 +13,7 @@ class Describer:
     """
     Three-dimensional histogram in the RGB colorspace.
     """
+
     def __init__(self, channels, bins, ranges, mask=None):
         """
         Store the list of channel indexes, number of bins, ranges of possible pixel values and the mask

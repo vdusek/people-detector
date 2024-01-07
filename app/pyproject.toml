@@ -1,0 +1,30 @@
+[tool.isort]
+known_first_party = ["jjnt_api"]
+line_length = 120
+multi_line_output = 2
+profile = "black"
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.mypy]
+color_output = true
+error_summary = true
+ignore_missing_imports = true
+pretty = true
+show_absolute_path = false
+show_error_codes = true
+
+[tool.pytest]
+python_files = "test_*.py"
+testpaths = "tests"
+
+[tool.pylint]
+disable = [
+  "invalid-name",
+  "missing-function-docstring",
+  "missing-module-docstring",
+  "missing-class-docstring",
+  "too-few-public-methods",
+  "too-many-arguments",
+]
+extension-pkg-whitelist = "pydantic"
+max-line-length = 120

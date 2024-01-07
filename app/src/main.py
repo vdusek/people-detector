@@ -1,20 +1,19 @@
-#===============================================================================
+# ===============================================================================
 # Brno University of Technology
 # Faculty of Information Technology
 # Academic year: 2018/2019
 # Bachelor thesis: Monitoring Pedestrian by Drone
 # Author: Vladimír Dušek
-#===============================================================================
+# ===============================================================================
 
 import sys
-import os
+
 from PyQt4.QtGui import QApplication
-from window import Window
+
 from detector import Detector
+from window import Window
 
-
-if __name__ == '__main__':
-
+if __name__ == "__main__":
     # 1) Create Detector with Retinanet trained model
     detector = Detector()
 

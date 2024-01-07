@@ -1,0 +1,8 @@
+black
+ipython
+isort
+mypy
+pylint
+pytest
+pytest-cov
+wemake-python-styleguide

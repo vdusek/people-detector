@@ -2,6 +2,6 @@ pillow
 numpy
 scipy
 opencv-python
-tensorflow
-keras
-keras_retinanet
+tensorflow==1.13.2
+keras==2.2.4
+keras_retinanet==1.0.0

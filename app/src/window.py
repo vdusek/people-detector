@@ -6,13 +6,15 @@
 # Author: Vladimír Dušek
 #===============================================================================
 
-import sys
-import cv2
 import shutil
-from PyQt4.QtGui import *
+import sys
+
+import cv2
 from PyQt4.QtCore import *
+from PyQt4.QtGui import *
+
 from file import File
-from utils import OutputType, InputType, MessageBoxType, npimg_to_pixmap, create_folder
+from utils import InputType, MessageBoxType, OutputType, create_folder, npimg_to_pixmap
 
 
 class Window(QMainWindow):

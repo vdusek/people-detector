@@ -1,28 +1,29 @@
-#===============================================================================
+# ===============================================================================
 # Brno University of Technology
 # Faculty of Information Technology
 # Academic year: 2018/2019
 # Bachelor thesis: Monitoring Pedestrian by Drone
 # Author: Vladimír Dušek
-#===============================================================================
+# ===============================================================================
 
 import time
+
 import cv2
+import keras
 import numpy as np
 import tensorflow as tf
-import keras
-from PIL import Image
 from keras_retinanet import models
-from keras_retinanet.utils.image import read_image_bgr, preprocess_image, resize_image
-from keras_retinanet.utils.visualization import draw_box
 from keras_retinanet.utils.colors import label_color
+from keras_retinanet.utils.image import preprocess_image, read_image_bgr, resize_image
+from keras_retinanet.utils.visualization import draw_box
+from PIL import Image
+
 from matcher import Matcher
 from object import Object
-from utils import OutputType, InputType, get_thickness, draw_caption, npimg_to_pixmap, create_folder
-
+from utils import InputType, OutputType, create_folder, draw_caption, get_thickness, npimg_to_pixmap
 
 # Path to the Retinanet trained model. If you want to use your own model, change the path.
-MODEL_PATH = '../models/resnet50_csv_40-converted.h5'
+MODEL_PATH = "../models/resnet50_csv_40-converted.h5"
 
 # Treshold for succesful detection (if detection's score is above the treshold, object is considered as detected)
 DETECTION_TRESHOLD = 0.5
@@ -32,29 +33,96 @@ class Detector:
     """
     Class for operations with detection network RetinaNet.
     """
+
     def __init__(self):
         """
         Initialization of Tensorflow session and Retinanet model.
         """
         session = self.get_session()
         keras.backend.tensorflow_backend.set_session(session)
-        self.model = models.load_model(MODEL_PATH, backbone_name='resnet50')
+        self.model = models.load_model(MODEL_PATH, backbone_name="resnet50")
         # load label to names mapping for visualization purposes
         self.labels_to_names = {
-            0: 'person', 1: 'bicycle', 2: 'car', 3: 'motorcycle', 4: 'airplane', 5: 'bus',
-            6: 'train', 7: 'truck', 8: 'boat', 9: 'traffic light', 10: 'fire hydrant', 11: 'stop sign',
-            12: 'parking meter', 13: 'bench', 14: 'bird', 15: 'cat', 16: 'dog', 17: 'horse', 18: 'sheep',
-            19: 'cow', 20: 'elephant', 21: 'bear', 22: 'zebra', 23: 'giraffe', 24: 'backpack',
-            25: 'umbrella', 26: 'handbag', 27: 'tie', 28: 'suitcase', 29: 'frisbee', 30: 'skis',
-            31: 'snowboard', 32: 'sports ball', 33: 'kite', 34: 'baseball bat', 35: 'baseball glove',
-            36: 'skateboard', 37: 'surfboard', 38: 'tennis racket', 39: 'bottle', 40: 'wine glass',
-            41: 'cup', 42: 'fork', 43: 'knife', 44: 'spoon', 45: 'bowl', 46: 'banana', 47: 'apple',
-            48: 'sandwich', 49: 'orange', 50: 'broccoli', 51: 'carrot', 52: 'hot dog', 53: 'pizza',
-            54: 'donut', 55: 'cake', 56: 'chair', 57: 'couch', 58: 'potted plant', 59: 'bed',
-            60: 'dining table', 61: 'toilet', 62: 'tv', 63: 'laptop', 64: 'mouse', 65: 'remote',
-            66: 'keyboard', 67: 'cell phone', 68: 'microwave', 69: 'oven', 70: 'toaster', 71: 'sink',
-            72: 'refrigerator', 73: 'book', 74: 'clock', 75: 'vase', 76: 'scissors', 77: 'teddy bear',
-            78: 'hair drier', 79: 'toothbrush'
+            0: "person",
+            1: "bicycle",
+            2: "car",
+            3: "motorcycle",
+            4: "airplane",
+            5: "bus",
+            6: "train",
+            7: "truck",
+            8: "boat",
+            9: "traffic light",
+            10: "fire hydrant",
+            11: "stop sign",
+            12: "parking meter",
+            13: "bench",
+            14: "bird",
+            15: "cat",
+            16: "dog",
+            17: "horse",
+            18: "sheep",
+            19: "cow",
+            20: "elephant",
+            21: "bear",
+            22: "zebra",
+            23: "giraffe",
+            24: "backpack",
+            25: "umbrella",
+            26: "handbag",
+            27: "tie",
+            28: "suitcase",
+            29: "frisbee",
+            30: "skis",
+            31: "snowboard",
+            32: "sports ball",
+            33: "kite",
+            34: "baseball bat",
+            35: "baseball glove",
+            36: "skateboard",
+            37: "surfboard",
+            38: "tennis racket",
+            39: "bottle",
+            40: "wine glass",
+            41: "cup",
+            42: "fork",
+            43: "knife",
+            44: "spoon",
+            45: "bowl",
+            46: "banana",
+            47: "apple",
+            48: "sandwich",
+            49: "orange",
+            50: "broccoli",
+            51: "carrot",
+            52: "hot dog",
+            53: "pizza",
+            54: "donut",
+            55: "cake",
+            56: "chair",
+            57: "couch",
+            58: "potted plant",
+            59: "bed",
+            60: "dining table",
+            61: "toilet",
+            62: "tv",
+            63: "laptop",
+            64: "mouse",
+            65: "remote",
+            66: "keyboard",
+            67: "cell phone",
+            68: "microwave",
+            69: "oven",
+            70: "toaster",
+            71: "sink",
+            72: "refrigerator",
+            73: "book",
+            74: "clock",
+            75: "vase",
+            76: "scissors",
+            77: "teddy bear",
+            78: "hair drier",
+            79: "toothbrush",
         }
 
     @staticmethod
@@ -91,7 +159,7 @@ class Detector:
         # For every object compute its cropped part and add it to the list
         for obj in objects:
             box = obj.box
-            cropped = image[box[1]:box[3], box[0]:box[2]].copy()
+            cropped = image[box[1] : box[3], box[0] : box[2]].copy()
             obj.add_cropped(cropped)
             objects_cropped.append(obj)
 
@@ -123,7 +191,7 @@ class Detector:
             caption = "%.1f%%" % (score * 100)
             # For detection various types of objects can be use following caption
             # caption = "%s: %.1f%%" % (self.labels_to_names[label], score * 100)
-            draw_caption(image_draw, box, caption, int(thickness*0.75), int(thickness*0.75))
+            draw_caption(image_draw, box, caption, int(thickness * 0.75), int(thickness * 0.75))
 
         return image_draw
 
@@ -176,7 +244,7 @@ class Detector:
             objects_cropped = self.crop_objects(image, objects_detected)
             matcher = Matcher(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
             matcher.process_objects(0, objects_cropped)
-            matcher.save_objects(output_name.split('.')[0] + '-dir/', 0, objects_cropped)
+            matcher.save_objects(output_name.split(".")[0] + "-dir/", 0, objects_cropped)
             output_image = matcher.get_panorama(InputType.IMAGE)
         else:
             raise ValueError
@@ -211,7 +279,7 @@ class Detector:
         # If output is video capture of frames with object boundaries
         if output_type == OutputType.BORDERS:
             # Create output video capture for writing frames
-            out_cap = cv2.VideoWriter(output_name, cv2.VideoWriter_fourcc(*'XVID'), fps, resolution)
+            out_cap = cv2.VideoWriter(output_name, cv2.VideoWriter_fourcc(*"XVID"), fps, resolution)
 
         # If output is a panorama image with trajectories of objects
         elif output_type == OutputType.PANORAMA:
@@ -235,7 +303,6 @@ class Detector:
 
         # Loop for reading whole video frame by frame
         while in_cap.isOpened():
-
             # Read single frame
             ret, image = in_cap.read()
             if not ret:
@@ -264,11 +331,11 @@ class Detector:
                 matcher.process_objects(frame_cnt, objects_cropped)
 
                 # Save objects which were detected in the frame
-                matcher.save_objects(output_name.split('.')[0] + '-dir/', frame_cnt, objects_cropped)
+                matcher.save_objects(output_name.split(".")[0] + "-dir/", frame_cnt, objects_cropped)
 
             # Save visualized frame to tmp/image-dir/
             image = Image.fromarray(image_with_borders)
-            image.save(tmp_frame_dir + file.get_frame_name(output_type) + '-frame' + str(frame_cnt) + '.jpg')
+            image.save(tmp_frame_dir + file.get_frame_name(output_type) + "-frame" + str(frame_cnt) + ".jpg")
 
             # Visualize processed frame with detected objects to output label
             window.actualize_output_label(npimg_to_pixmap(image_with_borders))

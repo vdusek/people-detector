@@ -7,6 +7,7 @@
 #===============================================================================
 
 import random
+
 from keras_retinanet.utils.colors import label_color
 
 

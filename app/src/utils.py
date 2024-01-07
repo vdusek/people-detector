@@ -6,12 +6,12 @@
 # Author: Vladimír Dušek
 #===============================================================================
 
-import os
 import math
-import cv2
+import os
 from enum import Enum
-from PyQt4.QtGui import QImage, QPixmap
 
+import cv2
+from PyQt4.QtGui import QImage, QPixmap
 
 # Smaller the parameter P is, thicker and bigger captions and borders are, according to a function y = sqrt(x/4P)
 P = 0.5
