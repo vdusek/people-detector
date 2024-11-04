@@ -61,7 +61,7 @@ You can manage the application using the GUI. Just select the input image/video,
 ### How to run it
 
 1. Clone this repository.
-2. Download my pretrained models from [MEGA Drive](https://mega.nz/folder/k9tiwIRJ#yPyhittvqFiDzrX7DDgpjg). You can use your own model as well.
+2. Download my pretrained models from [MEGA Drive](https://mega.nz/folder/slk0zJyS#yPyhittvqFiDzrX7DDgpjg). You can use your own model as well.
 3. Specify path to the model [on this](https://github.com/vdusek/people_detector/blob/master/app/src/detector.py#L25) line.
     - Optionally you can change the following parameters: [DETECTION_TRESHOLD](https://github.com/vdusek/people_detector/blob/master/app/src/detector.py#L28), [EUCLIDEAN_DISTANCE_TRESHOLD](https://github.com/vdusek/people_detector/blob/master/app/src/matcher.py#L20), [HIST_SIMILARITY_TRESHOLD](https://github.com/vdusek/people_detector/blob/master/app/src/matcher.py#L23), [FIRST_AND_LAST_POINT_TRESHOLD](https://github.com/vdusek/people_detector/blob/master/app/src/matcher.py#L26) and [P](https://github.com/vdusek/people_detector/blob/master/app/src/utils.py#L17).
 4. You should have Python3.7+ and its package manager Pip.
